@@ -26,4 +26,12 @@ class TextNode:
         )
     
     def __repr__(self) -> str:
-        return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
+        return ", ".join(
+            [ item for item in (
+                f"TextNode({self.text}",
+                self.text_type.value,
+                self.url
+            )
+            if item is not None ]
+        ) + ")"
+                  
