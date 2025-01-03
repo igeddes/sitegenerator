@@ -74,8 +74,6 @@ class ParentNode(HTMLNode):
             raise ValueError("ParentNodes must have a tag")
         if not self.children:
             raise ValueError("ParentNodes must be associated with one or more children")
-        if not all([isinstance(child, LeafNode) for child in self.children]):
-            raise ValueError("All child nodes should be of type LeafNode")
 
         return self.tag_data([child.to_html() for child in self.children])
 

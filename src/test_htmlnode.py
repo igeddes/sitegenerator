@@ -137,20 +137,25 @@ class TestHTMLParentNode(unittest.TestCase):
         node = ParentNode(
             "p",
             [
-                LeafNode("b", "Bold text"),
-                LeafNode(None, "Normal text"),
-                ParentNode("i", []),
-                LeafNode(None, "Normal text"),
+                ParentNode(
+                    "indented",
+                    [
+                        LeafNode("b", "Bold text"),
+                        LeafNode(None, "Normal text"),
+                        LeafNode("i", "italic text"),
+                        LeafNode(None, "Normal text"),
+                    ],
+                )
             ],
         )
         self.assertEqual(node.tag, "p")
         self.assertEqual(node.value, None)
-        self.assertEqual(len(node.children), 4)
+        self.assertEqual(len(node.children), 1)
         self.assertEqual(node.props, None)
-
-        with self.assertRaises(ValueError) as context:
-            node.to_html()
-        self.assertTrue("child nodes should be" in str(context.exception))
+        self.assertEqual(
+            "<p><indented><b>Bold text</b>Normal text<i>italic text</i>Normal text</indented></p>",
+            node.to_html(),
+        )
 
 
 if __name__ == "__main__":
