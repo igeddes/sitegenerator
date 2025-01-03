@@ -19,7 +19,6 @@ class TestTextNode(unittest.TestCase):
         node2 = TextNode("This is a text node", TextType.ITALIC)
         self.assertEqual(node, node2)
 
-
     def test_mismatching_text(self):
         node = TextNode("This is a text node", "bold")
         node2 = TextNode("This is a different text node", TextType.BOLD)
@@ -32,7 +31,9 @@ class TestTextNode(unittest.TestCase):
 
     def test_mismatching_url(self):
         node = TextNode("This is a text node", "normal", "https://www.works.not")
-        node2 = TextNode("This is a text node", TextType.NORMAL, "https://www.works.net")
+        node2 = TextNode(
+            "This is a text node", TextType.NORMAL, "https://www.works.net"
+        )
         self.assertNotEqual(node, node2)
 
     def test_invalid_texttype_str(self):
@@ -42,6 +43,7 @@ class TestTextNode(unittest.TestCase):
     def test_invalid_texttype_obj(self):
         with self.assertRaises(AttributeError):
             TextNode("This is a text node", TextType.NORMAN, "https://www.works.not")
+
 
 if __name__ == "__main__":
     unittest.main()
