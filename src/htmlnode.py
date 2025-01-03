@@ -1,4 +1,4 @@
-from typing import Optional, Dict, List
+from typing import Optional, Union, Dict, List
 
 class HTMLNode:
     def __init__(self, 
@@ -16,7 +16,20 @@ class HTMLNode:
         raise NotImplementedError()
 
     def props_to_html(self):
-        return " " + " ".join([f'{key}="{value}"' for key, value in self.props.items()])
+        if not self.props:
+            return ""
+        return " ".join([f'{key}="{value}"' for key, value in self.props.items()])
+    
+    @property
+    def open_tag(self):
+        if props := self.props_to_html():
+            return f"<{self.tag} {props}>"
+        return f"<{self.tag}>"
+    
+    def tag_data(self, data: Union[str, List[str]]) -> str:
+        if isinstance(data, list):
+            data = "".join(data)
+        return f"{self.open_tag}{data}</{self.tag}>"
 
     def __repr__(self):
         return f'HTMLNode({", ".join(
@@ -33,7 +46,59 @@ class HTMLNode:
     
 
 
+class LeafNode(HTMLNode):
+    def __init__(self,
+        tag: Optional[str], 
+        value: str,
+        props: Optional[Dict[str, str]] = None
+    ) -> None:
+        super().__init__(
+            tag = tag,
+            value = value,
+            props = props
+        )
+
+    def to_html(self):
+        if not self.value:
+            raise ValueError("Leaf nodes must have a value")
+
+        if not self.tag:
+            return self.value
+                
+        return self.tag_data(self.value)
+
+class ParentNode(HTMLNode):
+    def __init__(self,
+        tag: str, 
+        children: List[object],
+        props: Optional[Dict[str, str]] = None
+    ) -> None:
+        super().__init__(
+            tag = tag,
+            children = children,
+            props = props
+        )
+
+    def to_html(self):
+        if not self.tag:
+            raise ValueError("ParentNodes must have a tag")
+        if not self.children:
+            raise ValueError("ParentNodes must be associated with one or more children")
+        if not all([isinstance(child, LeafNode) for child in self.children]):
+            raise ValueError("All child nodes should be of type LeafNode")
+        
+        return self.tag_data([child.to_html() for child in self.children])
+
 
 if __name__ == "__main__":
-    aa = HTMLNode("apple", "orange", [], {"tank": "empty", "distance": "no"})
-    print(aa)
+    node = ParentNode(
+        "p",
+        [
+            LeafNode("b", "Bold text"),
+            LeafNode(None, "Normal text"),
+            LeafNode("i", "italic text"),
+            LeafNode(None, "Normal text"),
+        ],
+    )
+
+    print(node.to_html())
