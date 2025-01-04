@@ -31,9 +31,7 @@ class TestTextNode(unittest.TestCase):
 
     def test_mismatching_url(self):
         node = TextNode("This is a text node", "text", "https://www.works.not")
-        node2 = TextNode(
-            "This is a text node", TextType.TEXT, "https://www.works.net"
-        )
+        node2 = TextNode("This is a text node", TextType.TEXT, "https://www.works.net")
         self.assertNotEqual(node, node2)
 
     def test_invalid_texttype_str(self):

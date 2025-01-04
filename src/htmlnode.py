@@ -27,10 +27,12 @@ class HTMLNode:
         if props := self.props_to_html():
             return f"<{self.tag} {props}>"
         return f"<{self.tag}>"
-    
+
     @property
     def close_tag(self):
-        if self.tag in ["img",]:
+        if self.tag in [
+            "img",
+        ]:
             return ""
         return f"</{self.tag}>"
 
