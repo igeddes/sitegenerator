@@ -30,9 +30,9 @@ class TestTextNode(unittest.TestCase):
         self.assertNotEqual(node, node2)
 
     def test_mismatching_url(self):
-        node = TextNode("This is a text node", "normal", "https://www.works.not")
+        node = TextNode("This is a text node", "text", "https://www.works.not")
         node2 = TextNode(
-            "This is a text node", TextType.NORMAL, "https://www.works.net"
+            "This is a text node", TextType.TEXT, "https://www.works.net"
         )
         self.assertNotEqual(node, node2)
 

@@ -1,10 +1,10 @@
 from textnode import TextNode, TextType
+from htmlnode import LeafNode
 
+from translation import text_node_to_html_node
 
 def main():
-    aa = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    print(aa)
-
+    pass
 
 if __name__ == "__main__":
     main()

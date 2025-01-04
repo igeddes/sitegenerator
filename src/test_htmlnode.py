@@ -87,7 +87,7 @@ class TestHTMLLeafNode(unittest.TestCase):
         self.assertEqual(node.children, None)
         self.assertEqual(node.props, {"src": "myimg.jpg", "alt": "Logo"})
         self.assertEqual(
-            '<img src="myimg.jpg" alt="Logo">This is a picture</img>', node.to_html()
+            '<img src="myimg.jpg" alt="Logo">This is a picture', node.to_html()
         )
 
 

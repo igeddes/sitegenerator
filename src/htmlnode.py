@@ -27,11 +27,17 @@ class HTMLNode:
         if props := self.props_to_html():
             return f"<{self.tag} {props}>"
         return f"<{self.tag}>"
+    
+    @property
+    def close_tag(self):
+        if self.tag in ["img",]:
+            return ""
+        return f"</{self.tag}>"
 
     def tag_data(self, data: Union[str, List[str]]) -> str:
         if isinstance(data, list):
             data = "".join(data)
-        return f"{self.open_tag}{data}</{self.tag}>"
+        return f"{self.open_tag}{data}{self.close_tag}"
 
     def __repr__(self):
         return f"""HTMLNode({", ".join(
@@ -54,7 +60,7 @@ class LeafNode(HTMLNode):
         super().__init__(tag=tag, value=value, props=props)
 
     def to_html(self):
-        if not self.value:
+        if self.value is None:
             raise ValueError("Leaf nodes must have a value")
 
         if not self.tag:
@@ -79,14 +85,4 @@ class ParentNode(HTMLNode):
 
 
 if __name__ == "__main__":
-    node = ParentNode(
-        "p",
-        [
-            LeafNode("b", "Bold text"),
-            LeafNode(None, "Normal text"),
-            LeafNode("i", "italic text"),
-            LeafNode(None, "Normal text"),
-        ],
-    )
-
-    print(node.to_html())
+    pass
