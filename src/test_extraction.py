@@ -1,7 +1,6 @@
 import unittest
 from textnode import TextNode, TextType
-from htmlnode import LeafNode
-from extraction import split_nodes_delimiter
+from extraction import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 
 
 class TestDecodeTextBlocks(unittest.TestCase):
@@ -44,6 +43,23 @@ class TestDecodeTextBlocks(unittest.TestCase):
             TextNode(' word.', 'bold')
         ]
         self.assertEqual(new_nodes, expected_result)
+
+class TestRegexExtraction(unittest.TestCase):
+    def test_extract_image(self):
+        text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
+        expected_result = [
+            ('rick roll', 'https://i.imgur.com/aKaOqIh.gif'),
+            ('obi wan', 'https://i.imgur.com/fJRm4Vk.jpeg')
+        ]
+        self.assertEqual(extract_markdown_images(text), expected_result)
+
+    def test_extract_link(self):
+        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"
+        expected_result = [
+            ('to boot dev', 'https://www.boot.dev'),
+            ('to youtube', 'https://www.youtube.com/@bootdotdev')
+        ]
+        self.assertEqual(extract_markdown_links(text), expected_result)
 
 if __name__ == "__main__":
     unittest.main()

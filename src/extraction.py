@@ -1,3 +1,4 @@
+import re
 from htmlnode import LeafNode
 from textnode import TextNode, TextType
 
@@ -9,6 +10,14 @@ def split_nodes_delimiter(old_nodes: TextNode, delimiter: str, text_type: TextTy
         for count, section in enumerate(node.text.split(delimiter)):
             result.append(TextNode(section, text_types[count%2]))
     return result
+
+
+def extract_markdown_images(text):
+    return re.findall(r'(?:!\[)(.*?)\](?:\((http.*?)\))', text)
+
+def extract_markdown_links(text):
+    return re.findall(r'(?: \[)(.*?)\](?:\((http.*?)\))', text)
+
 
 def main():
     pass
